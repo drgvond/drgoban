@@ -17,7 +17,7 @@
 	<script type="application/x-javascript">
 	function init()
 	{
-		goban = new Goban(document.getElementById("canvas"), 19, 19 * 31);
+		goban = new DrGoban(document.getElementById("goban"), 19, 19 * 31);
 		goban.draw();
 		goban.drawBlackStone(4, 17);
 		goban.drawWhiteStone(4, 15);
@@ -27,6 +27,9 @@
 		goban.drawBlackLabel(3, 14, "b");
 		goban.drawBlackStone(3, 16);
 		goban.drawWhiteLabel(3, 16, "c");
+		goban.drawEmptyLabel(2, 15, "e");
+		goban.drawEmptyLabel(2, 14, "f");
+		goban.drawEmptyLabel(2, 16, "g");
 		goban.drawWhiteStone(4, 14);
 		goban.drawBlackLabel(4, 14, "d");
 		goban.drawBlackStone(3, 16);
@@ -39,7 +42,7 @@
 		// 		goban.drawStone(((i+j) & 1) ? "white" : "black", i, j);
 		// 	}
 		
-		document.getElementById("canvas").addEventListener("mousemove", onClick, false);
+		document.getElementById("goban").addEventListener("mousemove", onClick, false);
 	}
 	
 	function onClick(event)
@@ -52,9 +55,7 @@
  </head>
 
 <body onload="init();">
-	<div>
-		<canvas id="canvas" width="600" height="600" style="position:absolute; left:0px; top:0px; z-index:1"></canvas>
-	</div>
+	<div id="goban"></div>
 	<p id="coords"></p>
 </body>
 
