@@ -1,0 +1,61 @@
+<!-- 
+      drgoban-test.html
+      DrGoban
+      
+      Created by Dr. G. von D. on 2008-07-07.
+      Copyright 2008 Chouette Labs. All rights reserved.
+ -->
+
+
+
+<html>
+
+<head>
+	<script src="drutils.js" type="text/javascript" charset="utf-8"></script>
+	<script src="drgoban.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script type="application/x-javascript">
+	function init()
+	{
+		goban = new Goban(document.getElementById("canvas"), 19, 19 * 31);
+		goban.draw();
+		goban.drawBlackStone(4, 17);
+		goban.drawWhiteStone(4, 15);
+		goban.drawBlackStone(3, 15);
+		goban.drawWhiteLabel(3, 15, "a");
+		goban.drawWhiteStone(3, 14);
+		goban.drawBlackLabel(3, 14, "b");
+		goban.drawBlackStone(3, 16);
+		goban.drawWhiteLabel(3, 16, "c");
+		goban.drawWhiteStone(4, 14);
+		goban.drawBlackLabel(4, 14, "d");
+		goban.drawBlackStone(3, 16);
+		goban.drawWhiteStone(4, 10);
+		goban.drawBlackStone(6, 17);
+		
+		// for (var j = 1; j <= goban._nrLines; ++j)
+		// 	for (var i = 1; i <= goban._nrLines; ++i)
+		// 	{
+		// 		goban.drawStone(((i+j) & 1) ? "white" : "black", i, j);
+		// 	}
+		
+		document.getElementById("canvas").addEventListener("mousemove", onClick, false);
+	}
+	
+	function onClick(event)
+	{
+		var paragraph = document.getElementById("coords");
+		paragraph.innerHTML = "<i>x</i> = " + event.pageX + "&emsp;<i>y</i> = " + event.pageY;
+	}
+	
+	</script>
+ </head>
+
+<body onload="init();">
+	<div>
+		<canvas id="canvas" width="600" height="600" style="position:absolute; left:0px; top:0px; z-index:1"></canvas>
+	</div>
+	<p id="coords"></p>
+</body>
+
+</html>
