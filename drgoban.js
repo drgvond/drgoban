@@ -40,6 +40,12 @@ DrGoban._hoshiPositions[13] = DrUtils.productArray([4, 7, 10], [4, 7, 10]);
 DrGoban._hoshiPositions[19] = DrUtils.productArray([4, 10, 16], [4, 10, 16]);
 
 
+DrGoban._labelDivId = function(row, col)
+{
+	return "drgoban-label-" + String(row) + "-" + String(col);
+}
+
+
 DrGoban.prototype =
 {
 	draw: function()
@@ -90,7 +96,20 @@ DrGoban.prototype =
 	{
 		this._ctx.fillStyle = DrGoban._bgColor;
 		this._ctx.fillRect(coords.x - this._sqWidth / 2, coords.y - this._sqWidth / 2, 
-						   this._sqWidth, this._sqWidth);	
+						   this._sqWidth, this._sqWidth);
+	},
+		
+	deleteLabel: function(row, col)
+	{
+		var labelId = DrGoban._labelDivId(row, col);
+		// FIXME Which one is faster, document.getElementById or this?
+		var cc = this._canvas.parentNode.childNodes;
+		for (var i = 0; i < cc.length; ++i)
+			if (cc[i].nodeType == 1 && cc[i].id == labelId)
+			{
+				this._canvas.parentNode.removeChild(cc[i]);
+				break;
+			}
 	},
 	
 	drawStone: function(color, row, col)
@@ -152,7 +171,7 @@ DrGoban.prototype =
 			var text = document.createElement("div");
 			this._canvas.parentNode.appendChild(text);
 			text.className = "DrGobanLabel";
-			text.id = "label-" + String(row) + "-" + String(col);
+			text.id = DrGoban._labelDivId(row, col);
 			text.style.zIndex = DrGoban._markZIndex;
 			text.style.fontSize = String(textSize) + "px";
 			text.style.color = color;
@@ -176,9 +195,40 @@ DrGoban.prototype =
 	drawEmptyLabel: function(row, col, label)
 	{
 		var coords = this.getIntersectionCoords(row, col);
-		var ctx = this._ctx;
 		this.clearIntersection(coords)
 		
 		this.drawLabel(row, col, label, "black");
+	},
+	
+	reset: function(row, col)
+	{
+		var coords = this.getIntersectionCoords(row, col);
+		this.clearIntersection(coords);
+		this.deleteLabel(row, col);
+		
+		var	vOrig = coords.y;
+		var vDest = coords.y;
+		if (row != 0)
+			vOrig -= this._sqWidth / 2;
+		if (row != this._nrLines)
+			vDest += this._sqWidth / 2;
+	
+		var	hOrig = coords.x;
+		var hDest = coords.x;
+		if (col != 0)
+			hOrig -= this._sqWidth / 2;
+		if (col != this._nrLines)
+			hDest += this._sqWidth / 2;
+
+		var ctx = this._ctx;
+		ctx.lineWidth = 1;
+		ctx.strokeStyle = DrGoban._lineColor;
+		
+		ctx.beginPath();
+		ctx.moveTo(coords.x, vOrig);
+		ctx.lineTo(coords.x, vDest);
+		ctx.moveTo(hOrig, coords.y);
+		ctx.lineTo(hDest, coords.y);
+		ctx.stroke();
 	},
 }
