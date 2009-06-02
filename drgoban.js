@@ -21,11 +21,13 @@ var DrGoban = function(div, nrLines, pixSize)
 	this._pixSize = pixSize;
 	this._sqWidth = pixSize / nrLines;
 	this._radius = (this._sqWidth - 1.5) / 2;
-	this._status = new Array(nrLines * nrLines);
+	this._status = [];
+	
+	return this;
 }
 
 
-// Some colors
+// Some colors to start with
 DrGoban._bgColor = "goldenrod";
 DrGoban._lineColor = "black";
 
@@ -35,7 +37,7 @@ DrGoban._markZIndex = 100;
 
 // Fill with hoshi positions for know goban sizes
 DrGoban._hoshiPositions = [];
-(DrGoban._hoshiPositions[9] = DrUtils.productArray([3, 7], [3, 7])).push([5, 5]);
+DrGoban._hoshiPositions[9] = DrUtils.productArray([3, 7], [3, 7]).push([5, 5]);
 DrGoban._hoshiPositions[13] = DrUtils.productArray([4, 7, 10], [4, 7, 10]);
 DrGoban._hoshiPositions[19] = DrUtils.productArray([4, 10, 16], [4, 10, 16]);
 
@@ -90,6 +92,12 @@ DrGoban.prototype =
 	{
 		return { x: (col - 1 + 0.5) * this._sqWidth, 
 				 y: (this._nrLines - row + 0.5) * this._sqWidth };
+	},
+	
+	getCoordsIntersection: function(x, y)
+	{
+		return { row: this._nrLines - Math.round(y / this._sqWidth - 0.5),
+				 col: 1 + Math.round(x / this._sqWidth - 0.5) };
 	},
 	
 	clearIntersection: function(coords)
@@ -174,6 +182,8 @@ DrGoban.prototype =
 			text.id = DrGoban._labelDivId(row, col);
 			text.style.zIndex = DrGoban._markZIndex;
 			text.style.fontSize = String(textSize) + "px";
+			text.style.fontFamily = "Arial, sans-serif";
+			var family = text.style.fontFamily;
 			text.style.color = color;
 			text.innerHTML = "<i>" + label + "</i>";
 			text.style.position = "absolute";

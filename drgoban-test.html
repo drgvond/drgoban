@@ -17,7 +17,8 @@
 	<script type="application/x-javascript">
 	function init()
 	{
-		goban = new DrGoban(document.getElementById("goban"), 19, 19 * 31);
+		var gobanElement = document.getElementById("goban");
+		goban = new DrGoban(gobanElement, 19, 600);
 		goban.draw();
 		goban.drawBlackStone(4, 17);
 		goban.drawWhiteStone(4, 15);
@@ -44,13 +45,18 @@
 		// 		goban.drawStone(((i+j) & 1) ? "white" : "black", i, j);
 		// 	}
 		
-		document.getElementById("goban").addEventListener("mousemove", onClick, false);
+		goban._canvas.addEventListener("click", onClick, false);
 	}
 	
 	function onClick(event)
 	{
 		var paragraph = document.getElementById("coords");
-		paragraph.innerHTML = "<i>x</i> = " + event.pageX + "&emsp;<i>y</i> = " + event.pageY;
+		var inter = goban.getCoordsIntersection(event.offsetX, event.offsetY);
+		paragraph.innerHTML = "<i>col</i> = " + inter.col + 
+							  "&emsp;<i>row</i> = " + inter.row;
+							
+		goban.drawStone(event.shiftKey ? "white" : "black",
+		 				inter.row, inter.col);
 	}
 	
 	</script>
