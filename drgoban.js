@@ -1,6 +1,6 @@
 // 
 //  drgoban.js
-//  DrDrGoban
+//  DrGoban
 //  
 //  Created by Dr. G. von D. on 2008-07-06.
 //  Copyright 2008 Chouette Labs. All rights reserved.
